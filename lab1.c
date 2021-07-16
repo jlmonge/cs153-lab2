@@ -5,7 +5,9 @@
 int
 main(int argc, char *argv[])
 {
-    debug();
+  debug();
 
-    exit();
+	wait(0);
+	exitWithStatus(0);
+	return 0;
 }
