@@ -10,7 +10,7 @@
 
 SYSCALL(fork)
 SYSCALL(exit)
-SYSCALL(wait) #part b
+SYSCALL(wait)
 SYSCALL(pipe)
 SYSCALL(read)
 SYSCALL(write)
@@ -29,5 +29,4 @@ SYSCALL(getpid)
 SYSCALL(sbrk)
 SYSCALL(sleep)
 SYSCALL(uptime)
-SYSCALL(exitWithStatus) #part a
-SYSCALL(waitpid) #part c
+SYSCALL(debug)
