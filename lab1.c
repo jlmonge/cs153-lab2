@@ -5,7 +5,7 @@
 int 
 main(int argc, char * argv[])
 {
-	wait(1);
+	wait(0);
 	exitWithStatus(0);
 	return 0;
 }
