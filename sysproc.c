@@ -28,7 +28,7 @@ sys_wait(void)
   if(argptr(1, (void*)&status, sizeof(*status)) < 0)
     return -1;
 
-  return wait(*status);      
+  return wait(status);      // Removed pointer from parameter to get rid of casting error.
 }
 
 int
