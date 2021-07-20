@@ -1,12 +1,11 @@
-// #include <stdlib.h>
 #include "types.h"
 #include "stat.h"
 #include "user.h"
 
-void testExit(void);
-void testWait(void);
-void testWaitPid(void);
-void testDebug(void);
+int testExit(void);
+int testWait(void);
+int testWaitPid(void);
+int testDebug(void);
 
 
 int
@@ -14,7 +13,6 @@ main(int argc, char *argv[])
 {	
 	if (argc > 2 || argc < 2){
 		printf(1,"Enter Exactly 2 arguments\n");
-		exitWithStatus(2);
 		return 0;
 	}
 	int input = atoi(argv[1]);
@@ -23,35 +21,80 @@ main(int argc, char *argv[])
 		testExit();
 	}
 	else if (input == 2){
-		testWaitPid();
-	}
-	else if (input == 3){
 		testWait();
+	} 
+	else if (input == 3){
+		testWaitPid();
 	}
 	else if (input == 4){
 		testDebug();
 	}
-
-	exitWithStatus(0);
+	exit();
 	return 0;
 }
 
-void testExit(void)
+int testExit(void)
 {
-	printf(1,"Testing exitWithStatus()\n");
+	printf(1,"Testing exitWithStatus() for part A\n");
+	int pid;
+	pid = fork();
+	if (pid == -1){
+		printf(1, "ERROR: FORK");
+		exitWithStatus(-1);
+	}
+	if (pid == 0){
+		printf(1, "Hello from the child pid (%d)(%d)\n", pid, getpid());
+		exitWithStatus(0);
+	}
+	else{
+		printf(1, "Hello from parent (%d)\n",pid);
+		exitWithStatus(0);
+	}
+	return 0;
 }
 
-void testWait(void)
+int testWait(void)
 {
-	printf(1,"Testing wait()\n");
+	printf(1,"Testing wait() for Part B\n");
+	int pid, status;
+	pid = fork();
+	if (pid == 0){
+		printf(1,"Hello from child with pid(%d)\n", pid);
+		printf(1,"Childs parent pid (%d)\n", getpid());
+	}
+	else{
+		printf(1,"Hello form parent\n");
+		wait(&status);
+		printf(1,"Child has terminated was pid (%d)\n", pid);
+		printf(1,"Parent pid (%d)\n",getpid());
+	}
+	printf(1,"End\n");
+	return 0;
 }
 
-void testWaitPid(void)
+int testWaitPid(void)
 {
-	printf(1,"Testing waitpid()\n");
+	printf(1,"Testing waitpid() for PartC\n");
+	
+	int pid, status;
+
+	printf(1,"Parent: %d\n",getpid());
+	pid = fork();
+	if (pid ==0){
+		printf(1,"Hello from child pid (%d)\n", pid);
+		sleep(2);
+		exitWithStatus(0);
+	}
+	waitpid(pid,&status,0);
+
+	printf(1,"Hello from parent pid (%d)\n", getpid());
+	
+	return 0;
 }
 
-void testDebug(void)
+int testDebug(void)
 {
-	printf(1,"Testing debug()\n");
+	printf(1,"Testing debug() for Part D\n");
+	debug();
+	return 0;
 }

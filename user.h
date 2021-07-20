@@ -24,7 +24,7 @@ char* sbrk(int);
 int sleep(int);
 int uptime(void);
 int exitWithStatus(int);    // Part A
-// int waitpid(int,int*,int);  // Part C
+int waitpid(int,int*,int);  // Part C
 void debug(void);           // Part E
 
 // ulib.c
