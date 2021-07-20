@@ -105,7 +105,7 @@ extern int sys_write(void);
 extern int sys_uptime(void);
 extern int sys_debug(void);
 extern int sys_exitWithStatus(void);
-// extern int sys_waitpid(void);
+extern int sys_waitpid(void);
 
 
 static int (*syscalls[])(void) = {
@@ -132,7 +132,7 @@ static int (*syscalls[])(void) = {
 [SYS_close]   sys_close,
 [SYS_debug]   sys_debug,
 [SYS_exitWithStatus]   sys_exitWithStatus,
-// [SYS_waitpid]   sys_waitpid,
+[SYS_waitpid]   sys_waitpid,
 };
 
 void
