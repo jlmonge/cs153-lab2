@@ -95,6 +95,32 @@ sys_uptime(void)
   return xticks;
 }
 
+int
+sys_exitWithStatus(void){
+  int status;
+
+  if(argint(0, &status) < 0){
+    return 0;
+  }
+  return exitWithStatus(status);
+
+}
+
+// int 
+// sys_waitpid(void){
+//   int pid;
+//   int* status;
+//   int options = 0;
+
+//   if(argint(0, &pid) < 0){
+//     return -1;
+//   }
+//   if (argptr (0 , (void*)&status ,sizeof(*status))){
+//     return -1;
+//   }
+//   return waitpid(pid, status, options);
+// }
+
 void
 sys_debug(void)
 {
