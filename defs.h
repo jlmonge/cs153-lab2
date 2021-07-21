@@ -120,7 +120,7 @@ void            userinit(void);
 int             wait(int*);             //Part B (modified)
 void            wakeup(void*);
 void            yield(void);
-int            exitWithStatus(int);    //Part A
+int             exitWithStatus(int);    //Part A
 int             waitpid(int,int*,int);  //Part C
 void            debug(void);            //Part E
 
