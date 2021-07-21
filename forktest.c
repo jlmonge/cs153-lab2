@@ -34,13 +34,13 @@ forktest(void)
   }
 
   for(; n > 0; n--){
-    if(wait(0) < 0){                      //Added Null paramaters for new wait(int*) funciton
+    if(wait(0) < 0){                      //Added null parameter for new wait(int*) function
       printf(1, "wait stopped early\n");
       exit();
     }
   }
 
-  if(wait(0) != -1){                      //Added Null paramaters for new wait(int*) funciton
+  if(wait(0) != -1){                      //Added null parameters for new wait(int*) function
     printf(1, "wait got too many\n");
     exit();
   }
