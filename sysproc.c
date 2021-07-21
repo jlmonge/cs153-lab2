@@ -21,12 +21,12 @@ sys_exit(void)
 }
 
 int
-sys_wait(void)
+sys_wait(void)    //Modified for part B
 {
   int* status;
 
-  if(argptr(0, (void*)&status, sizeof(*status)) < 0)
-    return -1;
+  if(argptr(0, (void*)&status, sizeof(*status)) < 0) //Fetch the nth word-sized system
+    return -1;                                        //call argument as a pointer
 
   return wait(status);      // Removed pointer from parameter to get rid of casting error.
 }
@@ -96,10 +96,10 @@ sys_uptime(void)
 }
 
 int
-sys_exitWithStatus(void){
+sys_exitWithStatus(void){ //Added system call for part A
   int status;
 
-  if(argint(0, &status) < 0){
+  if(argint(0, &status) < 0){   //Fetch the nth 32-bit system call argument.
     return -1;
   }
   exitWithStatus(status);
@@ -108,22 +108,22 @@ sys_exitWithStatus(void){
 }
 
 int 
-sys_waitpid(void){
+sys_waitpid(void){    //Added system call waitpid for part C
   int pid;
   int* status;
-  int options = 0;
+  int options = 0;    //options field returns 0, will update following version
 
-  if(argint(0, &pid) < 0){
+  if(argint(0, &pid) < 0){  //Fetch the nth 32-bit system call argument.
     return -1;
   }
-  if (argptr (1, (void*)&status ,sizeof(*status))){
-    return -1;
+  if (argptr (1, (void*)&status ,sizeof(*status))){ //Fetch the nth word-sized system 
+    return -1;                                      //call argument as a pointer
   }
   return waitpid(pid, status, options);
 }
 
 void
-sys_debug(void)
+sys_debug(void)     //Added system call for part E
 {
   debug();
 }
