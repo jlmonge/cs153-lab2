@@ -495,7 +495,7 @@ procdump(void)
 
 //Part A
 int
-exitWithStatus(int status)
+exitWithStatus(int status)  //Mocked form exit() to take in parameters 
 {
   struct proc *curproc = myproc();
   struct proc *p;
@@ -533,7 +533,7 @@ exitWithStatus(int status)
 
   // Jump into the scheduler, never to return.
 
-  curproc->exit_status = status;
+  curproc->exit_status = status;    //Saves exit status of process (part 1)
   // cprintf("Exit status %d\n", curproc->exit_status);
   curproc->state = ZOMBIE;
   sched();
@@ -546,7 +546,7 @@ exitWithStatus(int status)
 // Wait for a child process to exit and return its pid.
 // Return -1 if this process has no children.
 int
-wait(int *status)
+wait(int *status)     // Updated so it takes in status
 {
   struct proc *p;
   int havekids, pid;
@@ -561,7 +561,7 @@ wait(int *status)
         continue;
       havekids = 1;
       if(p->state == ZOMBIE){
-        if(status){
+        if(status){                 //Saves status only if it has child PART B
           *status = p->exit_status;
         }
         // cprintf("Status %d\n", status);
@@ -594,8 +594,8 @@ wait(int *status)
 
 //Part C
 int
-waitpid(int pid, int *status, int options)
-{
+waitpid(int pid, int *status, int options)    //Mocked and Modified wait() 
+{                                             //Added function for PART C
   struct proc *p;
   int havekids;
   struct proc *curproc = myproc();
@@ -605,14 +605,14 @@ waitpid(int pid, int *status, int options)
     // Scan through table looking for exited children.
     havekids = 0;
     for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
-      if(p->pid != pid)
+      if(p->pid != pid)  //Waits for process equal to the one provided in params           
         continue;
       havekids = 1;
-      if(p->state == ZOMBIE){
+      if(p->state == ZOMBIE){  //Saves status only if it has child (PART C)
         if(status){
           *status = p->exit_status;
         }
-        p->exit_status = 0;
+
         // cprintf("Status %d\n", status);
         // Found one.
         pid = p->pid;
