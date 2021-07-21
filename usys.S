@@ -29,6 +29,6 @@ SYSCALL(getpid)
 SYSCALL(sbrk)
 SYSCALL(sleep)
 SYSCALL(uptime)
-SYSCALL(debug)
-SYSCALL(exitWithStatus)
-SYSCALL(waitpid)
+SYSCALL(debug)  // Part E
+SYSCALL(exitWithStatus) // Part A
+SYSCALL(waitpid)  // Part C

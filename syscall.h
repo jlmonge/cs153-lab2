@@ -20,6 +20,6 @@
 #define SYS_link   19
 #define SYS_mkdir  20
 #define SYS_close  21
-#define SYS_debug  22
-#define SYS_exitWithStatus  23
-#define SYS_waitpid 24
+#define SYS_debug  22   // Part E
+#define SYS_exitWithStatus  23  // Part A
+#define SYS_waitpid 24  // Part C
