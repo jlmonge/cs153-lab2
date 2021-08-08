@@ -4,7 +4,7 @@ struct rtcdate;
 // system calls
 int fork(void);
 int exit(void) __attribute__((noreturn));
-int wait(int*);             // Part B (modified)
+int wait(int*);
 int pipe(int*);
 int write(int, const void*, int);
 int read(int, void*, int);
@@ -23,9 +23,11 @@ int getpid(void);
 char* sbrk(int);
 int sleep(int);
 int uptime(void);
-int exitWithStatus(int);    // Part A
-int waitpid(int,int*,int);  // Part C
-void debug(void);           // Part E
+int exitWithStatus(int);
+int waitpid(int,int*,int);
+void debug(void);
+int changepriority(int,int);    // Lab 2
+void ps(void);                  // Lab 2
 
 // ulib.c
 int stat(const char*, struct stat*);
