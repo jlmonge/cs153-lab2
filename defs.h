@@ -117,12 +117,14 @@ void            sched(void);
 void            setproc(struct proc*);
 void            sleep(void*, struct spinlock*);
 void            userinit(void);
-int             wait(int*);             //Part B (modified)
+int             wait(int*);
 void            wakeup(void*);
 void            yield(void);
-int             exitWithStatus(int);    //Part A
-int             waitpid(int,int*,int);  //Part C
-void            debug(void);            //Part E
+int             exitWithStatus(int);
+int             waitpid(int,int*,int);
+void            debug(void);
+int             changepriority(int,int);    // Lab 2
+void            ps(void);                   // Lab 2
 
 // swtch.S
 void            swtch(struct context**, struct context*);

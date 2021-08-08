@@ -8,7 +8,6 @@ int testWait(void);
 int testWaitPid(void);
 int testDebug(void);
 
-
 int
 main(int argc, char *argv[])
 {	

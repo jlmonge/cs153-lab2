@@ -88,6 +88,7 @@ allocproc(void)
 found:
   p->state = EMBRYO;
   p->pid = nextpid++;
+  p->priority = 3;  // LAB 2: sets default priority w/o inheritance
 
   release(&ptable.lock);
 
@@ -281,6 +282,7 @@ void
 scheduler(void)
 {
   struct proc *p;
+  struct proc *p1; // LAB 2
   struct cpu *c = mycpu();
   c->proc = 0;
   
@@ -288,21 +290,34 @@ scheduler(void)
     // Enable interrupts on this processor.
     sti();
 
+    struct proc *hpriority = 0;  // LAB 2
+
     // Loop over process table looking for process to run.
     acquire(&ptable.lock);
-    for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+    for(p = ptable.proc; p < &ptable.proc[NPROC]; p++) {
       if(p->state != RUNNABLE)
         continue;
+      // LAB 2: Once a runnable process is found, loop over
+      // process table looking for the highest priority process.
+      hpriority = p;
+
+      for(p1 = ptable.proc; p < &ptable.proc[NPROC]; p++) {
+        if(p1->state != RUNNABLE)
+          continue;
+        if (p1->priority < hpriority->priority) // Lower number = higher priority
+          hpriority = p1;
+      }
 
       // Switch to chosen process.  It is the process's job
       // to release ptable.lock and then reacquire it
       // before jumping back to us.
+      p = hpriority; // LAB 2
       c->proc = p;
-      switchuvm(p);
+      switchuvm(p); // switch to processes page table
       p->state = RUNNING;
 
-      swtch(&(c->scheduler), p->context);
-      switchkvm();
+      swtch(&(c->scheduler), p->context); // save current register context in 1st arg, load from 2nd arg
+      switchkvm(); // kernel loads its memory back
 
       // Process is done running for now.
       // It should have changed its p->state before coming back.
@@ -640,7 +655,6 @@ waitpid(int pid, int *status, int options)    //Mocked and Modified wait()
   }
 }
 
-
 //PART E
 void
 debug(void)
@@ -651,4 +665,39 @@ debug(void)
   cprintf("pid: %d\n",p->pid);
   cprintf("killed: %d\n",p->killed);
   cprintf("name: %s\n",p->name);
+}
+
+// Change the priority of a process.
+int
+changepriority(int pid, int priority)
+{
+  struct proc *p;
+
+  acquire(&ptable.lock);
+
+  for(p = ptable.proc; p < &ptable.proc[NPROC]; p++) {
+    if(p->pid == pid) {
+      p->priority = priority;
+      break;
+    }
+  }
+  release(&ptable.lock);
+  return pid;
+}
+
+// Get process status.
+void
+ps(void)
+{
+  struct proc *p;
+
+  cprintf("PID\tNAME\tPRIORITY\n");
+  acquire(&ptable.lock);
+  for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+    if (p->state == UNUSED)
+      continue;
+    cprintf("%d\t%s\t%d\n", p->pid, p->name, p->priority);
+  }
+
+  release(&ptable.lock);
 }
