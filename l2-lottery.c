@@ -3,14 +3,20 @@
 #include "user.h"
 #include "stddef.h"
 
+// The test should be running ps
+
 int
 main(int argc, char *argv[])
 {
-    if (argc != 3) {
-        printf("Usage: l2-changepr <pid> <priority>");
+    if (argc != 2) {
+        printf(1, "Usage: l2-lottery <priority>\n");
     }
     else {
-        int pid = atoi(argv[1]);
-        int priority = atoi(argv[2]);
+        int pid = getpid();
+        int priority = atoi(argv[1]);
+        modpr(pid, priority);
+        ps();
     }
+    exit();
+    return 0;
 }

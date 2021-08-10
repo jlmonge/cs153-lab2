@@ -23,5 +23,6 @@
 #define SYS_debug  22
 #define SYS_exitWithStatus  23
 #define SYS_waitpid 24
-#define SYS_changepriority 25  // Lab 2
-#define SYS_ps 26  // Lab 2
+#define SYS_modpr   25  // LAB 2
+#define SYS_ps      26  // LAB 2
+#define SYS_getpr   27 // LAB 2

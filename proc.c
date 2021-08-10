@@ -89,6 +89,10 @@ found:
   p->state = EMBRYO;
   p->pid = nextpid++;
   p->priority = 3;  // LAB 2: sets default priority w/o inheritance
+  p->runtime = 0;   // LAB 2: keeps track of process runtime
+  p->arrival = (int)ticks;
+  p->turnaround = 0;
+  p->waiting = 0;
 
   release(&ptable.lock);
 
@@ -198,6 +202,7 @@ fork(void)
     return -1;
   }
   np->sz = curproc->sz;
+  np->priority = curproc->priority; // LAB 2: Bonus 2
   np->parent = curproc;
   *np->tf = *curproc->tf;
 
@@ -282,7 +287,6 @@ void
 scheduler(void)
 {
   struct proc *p;
-  struct proc *p1; // LAB 2
   struct cpu *c = mycpu();
   c->proc = 0;
   
@@ -290,7 +294,8 @@ scheduler(void)
     // Enable interrupts on this processor.
     sti();
 
-    struct proc *hpriority = 0;  // LAB 2
+    struct proc *p1 = 0; // LAB 2
+    //struct proc *hpriority = 0; // PRIORITY
 
     // Loop over process table looking for process to run.
     acquire(&ptable.lock);
@@ -299,32 +304,54 @@ scheduler(void)
         continue;
       // LAB 2: Once a runnable process is found, loop over
       // process table looking for the highest priority process.
-      hpriority = p;
+      /*
+      hpriority = p;  // START PRIORITY
 
-      for(p1 = ptable.proc; p < &ptable.proc[NPROC]; p++) {
+      for(p1 = ptable.proc; p1 < &ptable.proc[NPROC]; p1++) {
         if(p1->state != RUNNABLE)
           continue;
-        if (p1->priority < hpriority->priority) // Lower number = higher priority
+        if (p1->priority > hpriority->priority) // Higher number = higher priority
           hpriority = p1;
       }
+
+      p = hpriority; // END PRIORITY
+      */
+
+      int sumtickets = 0; // START LOTTERY
+      for(p1 = ptable.proc; p1 < &ptable.proc[NPROC]; p1++) {
+        if(p1->state != RUNNABLE)
+          continue;
+        sumtickets += p1->priority; // number of tickets = priority
+      }
+
+      int rand = 0;
+      int count = 0;
+      rand = (int)ticks % sumtickets; // 1 tick = 0.01 s
+
+      if ((count + p->priority) < rand) {
+        count += p->priority;
+        continue;
+      } // END LOTTERY
 
       // Switch to chosen process.  It is the process's job
       // to release ptable.lock and then reacquire it
       // before jumping back to us.
-      p = hpriority; // LAB 2
       c->proc = p;
       switchuvm(p); // switch to processes page table
       p->state = RUNNING;
 
+      int start = (int)ticks;
       swtch(&(c->scheduler), p->context); // save current register context in 1st arg, load from 2nd arg
       switchkvm(); // kernel loads its memory back
-
+      int finish = (int)ticks;
+      p->runtime += finish - start;
+      p->turnaround = finish - p->arrival;
+      p->waiting = p->turnaround - p->runtime;
       // Process is done running for now.
       // It should have changed its p->state before coming back.
       c->proc = 0;
     }
     release(&ptable.lock);
-
   }
 }
 
@@ -378,7 +405,7 @@ forkret(void)
     // of a regular process (e.g., they call sleep), and thus cannot
     // be run from main().
     first = 0;
-    iinit(ROOTDEV);
+    iinit(ROOTDEV); // debug
     initlog(ROOTDEV);
   }
 
@@ -669,7 +696,7 @@ debug(void)
 
 // Change the priority of a process.
 int
-changepriority(int pid, int priority)
+modpr(int pid, int priority)
 {
   struct proc *p;
 
@@ -691,12 +718,12 @@ ps(void)
 {
   struct proc *p;
 
-  cprintf("PID\tNAME\tPRIORITY\n");
+  cprintf("PID\tNAME\tPRIORITY\tRUNTIME\tTURNAROUND\tWAITING\n");
   acquire(&ptable.lock);
   for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
     if (p->state == UNUSED)
       continue;
-    cprintf("%d\t%s\t%d\n", p->pid, p->name, p->priority);
+    cprintf("%d\t%s\t%d\t\t%d\t%d\t\t%d\n", p->pid, p->name, p->priority, p->runtime, p-> turnaround, p-> waiting);
   }
 
   release(&ptable.lock);

@@ -129,7 +129,7 @@ sys_debug(void)     //Added system call for part E
 }
 
 int
-sys_changepriority(void) // Lab 2
+sys_modpr(void) // LAB 2
 {
   int pid, priority;
 
@@ -138,11 +138,17 @@ sys_changepriority(void) // Lab 2
   if(argint(1, &priority) < 0)
     return -1;
 
-  return changepriority(pid, priority);
+  return modpr(pid, priority);
 }
 
 void
-sys_ps(void) // Lab 2
+sys_ps(void) // LAB 2
 {
   ps();
+}
+
+int
+sys_getpr(void) // LAB 2
+{
+  return myproc()->priority;
 }

@@ -32,5 +32,6 @@ SYSCALL(uptime)
 SYSCALL(debug)
 SYSCALL(exitWithStatus)
 SYSCALL(waitpid)
-SYSCALL(changepriority) // Lab 2
-SYSCALL(ps) // Lab 2
+SYSCALL(modpr)  // LAB 2
+SYSCALL(ps) // LAB 2
+SYSCALL(getpr)  // LAB 2

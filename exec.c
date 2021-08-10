@@ -99,7 +99,7 @@ exec(char *path, char **argv)
   curproc->sz = sz;
   curproc->tf->eip = elf.entry;  // main
   curproc->tf->esp = sp;
-  curproc->priority = 2;    // LAB 2: shell commands get higher priority
+  curproc->priority = 4;    // LAB 2: shell commands get higher priority
   switchuvm(curproc);
   freevm(oldpgdir);
   return 0;

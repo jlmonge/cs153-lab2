@@ -7,7 +7,7 @@ int
 main(int argc, char *argv[])
 {
     if (argc != 3) {
-        printf(1, "Usage: l2-changepr <pid> <priority>\n");
+        printf(1, "Usage: l2-modpr <pid> <priority>\n");
     }
     else {
         int pid = atoi(argv[1]);
@@ -20,8 +20,7 @@ main(int argc, char *argv[])
 
         printf(1, "~~~ BEFORE ~~~\n");
         ps();
-        changepriority(pid, priority);
-        sleep(5);
+        modpr(pid, priority);
         printf(1, "~~~ AFTER ~~~\n");
         ps();
     }
