@@ -106,8 +106,9 @@ extern int sys_uptime(void);
 extern int sys_debug(void);
 extern int sys_exitWithStatus(void);
 extern int sys_waitpid(void);
-extern int sys_changepriority(void); // Lab 2
-extern int sys_ps(void); // Lab 2
+extern int sys_modpr(void); // LAB 2
+extern int sys_ps(void); // LAB 2
+extern int sys_getpr(void); // LAB 2
 
 static int (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,
@@ -134,8 +135,9 @@ static int (*syscalls[])(void) = {
 [SYS_debug]   sys_debug,
 [SYS_exitWithStatus]   sys_exitWithStatus,
 [SYS_waitpid]   sys_waitpid,
-[SYS_changepriority]   sys_changepriority,  // Lab 2
-[SYS_ps]   sys_ps  // Lab 2
+[SYS_modpr]   sys_modpr,  // LAB 2
+[SYS_ps]   sys_ps,  // LAB 2
+[SYS_getpr]   sys_getpr  // LAB 2
 };
 
 void

@@ -26,8 +26,9 @@ int uptime(void);
 int exitWithStatus(int);
 int waitpid(int,int*,int);
 void debug(void);
-int changepriority(int,int);    // Lab 2
-void ps(void);                  // Lab 2
+int modpr(int,int); // LAB 2
+void ps(void);  // LAB 2
+int getpr(void);    // LAB 2
 
 // ulib.c
 int stat(const char*, struct stat*);

@@ -3,14 +3,18 @@
 #include "user.h"
 #include "stddef.h"
 
+// We want turnaround time and wait time.
+
 int
 main(int argc, char *argv[])
 {
-    if (argc != 3) {
-        printf("Usage: l2-changepr <pid> <priority>");
+    if (argc != 2) {
+        printf("Usage: l2-perf <pid>\n");
     }
     else {
         int pid = atoi(argv[1]);
-        int priority = atoi(argv[2]);
+        performance(pid);
     }
+    exit();
+    return 0;
 }
