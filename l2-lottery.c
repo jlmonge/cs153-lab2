@@ -15,7 +15,12 @@ main(int argc, char *argv[])
         int pid = getpid();
         int priority = atoi(argv[1]);
         modpr(pid, priority);
-        ps();
+        printf(1, "priority of %d has been set\n", pid);
+        int i;
+        for (i = 0; i < 10; i++) {
+            sleep(1);
+            ps();
+        }
     }
     exit();
     return 0;

@@ -718,12 +718,18 @@ ps(void)
 {
   struct proc *p;
 
-  cprintf("PID\tNAME\tPRIORITY\tRUNTIME\tTURNAROUND\tWAITING\n");
+  cprintf("PID\tNAME\t\tPRIORITY\tRUNTIME\tTURNAROUND\tWAITING\n");
   acquire(&ptable.lock);
   for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
     if (p->state == UNUSED)
       continue;
-    cprintf("%d\t%s\t%d\t\t%d\t%d\t\t%d\n", p->pid, p->name, p->priority, p->runtime, p-> turnaround, p-> waiting);
+    if (strlen(p->name) < 8) {
+      cprintf("%d\t%s\t\t%d\t\t%d\t%d\t\t%d\n", p->pid, p->name, p->priority, p->runtime, p-> turnaround, p-> waiting);
+    }
+    else {
+      cprintf("%d\t%s\t%d\t\t%d\t%d\t\t%d\n", p->pid, p->name, p->priority, p->runtime, p-> turnaround, p-> waiting);
+    }
+
   }
 
   release(&ptable.lock);
